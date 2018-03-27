@@ -1,0 +1,29 @@
+{
+  "name": "websocket-demo",
+  "version": "1.0.0",
+  "description": "demo for my blog",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lwyj123/websocket-demo.git"
+  },
+  "keywords": [
+    "demo"
+  ],
+  "author": "lwyj123",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/lwyj123/websocket-demo/issues"
+  },
+  "homepage": "https://github.com/lwyj123/websocket-demo#readme",
+  "dependencies": {
+    "public-ip": "^2.4.0",
+    "redis": "^2.8.0",
+    "uuid": "^3.2.1",
+    "ws": "^5.1.0"
+  }
+}
