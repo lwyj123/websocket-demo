@@ -15,7 +15,7 @@ const System = {
 }
 
 const DB = {
-  REDIS_HOST: 'r-j6caf235c39ec234.redis.rds.aliyuncs.com',
+  REDIS_HOST: '47.94.233.234',
   REDIS_PORT: '6379',
   REDIS_PASSWORD: 'Websocket123'
 }

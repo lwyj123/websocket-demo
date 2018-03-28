@@ -1,6 +1,6 @@
 const WebSocket = require('ws');
 const publicIp = require('public-ip');
-const uuidv3 = require('uuid/v3');
+const uuidv1 = require('uuid/v1');
 const redis = require("redis");
 const config = require('./config');
 
@@ -31,7 +31,7 @@ let sockets = {};
 // };
 
 wss.on('connection', function connection(ws) {
-  const uuid = uuidv3('lwio.me', uuidv3.DNS);
+  const uuid = uuidv1();
   ws.uuid = uuid;
   sockets[uuid] = ws;
   ws.on('message', function incoming(message) {
