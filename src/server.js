@@ -67,9 +67,7 @@ sub.on('message', function(channel, message) {
     // 如果socket是非本服务器的
     if(!wsFrom) {
       wss.clients.forEach(function each(client) {
-        if (client !== ws && client.readyState === WebSocket.OPEN) {
-          client.send(`来自其他服务器的用户${uuid}发送了: ${content}`);
-        }
+        client.send(`来自其他服务器的用户${uuid}发送了: ${content}`);
       });
     }
 	}
