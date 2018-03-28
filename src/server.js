@@ -37,7 +37,7 @@ wss.on('connection', function connection(ws) {
   ws.on('message', function incoming(message) {
     // publish消息给其他服务器
     pub.publish('channel', `${ws.uuid}>${message}`);
-    console.log('publish `${ws.uuid}>${message}`')
+    console.log(`publish to channel:  ${ws.uuid}>${message}`)
     // 向本服务器的socket广播
     wss.clients.forEach(function each(client) {
       if (client !== ws && client.readyState === WebSocket.OPEN) {
