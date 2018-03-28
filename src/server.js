@@ -21,21 +21,24 @@ const ip2name = {
 
 let sockets = {};
 
-wss.broadcast = function broadcast(data) {
-  wss.clients.forEach(function each(client) {
-    if (client.readyState === WebSocket.OPEN) {
-      client.send(data);
-    }
-  });
-};
+// // broadcast message to clients
+// wss.broadcast = function broadcast(data) {
+//   wss.clients.forEach(function each(client) {
+//     if (client.readyState === WebSocket.OPEN) {
+//       client.send(data);
+//     }
+//   });
+// };
 
 wss.on('connection', function connection(ws) {
   const uuid = uuidv3('lwio.me', uuidv3.DNS);
   ws.uuid = uuid;
   sockets[uuid] = ws;
   ws.on('message', function incoming(message) {
+    // publish消息给其他服务器
     pub.publish('channel', `${ws.uuid}>${message}`);
     console.log('publish `${ws.uuid}>${message}`')
+    // 向本服务器的socket广播
     wss.clients.forEach(function each(client) {
       if (client !== ws && client.readyState === WebSocket.OPEN) {
         client.send(`来自${ws.from || '???'}的用户${ws.uuid}发送了: ${message}`);
@@ -56,15 +59,19 @@ sub.on('message', function(channel, message) {
   console.log(`channel ${channel}, ${message}`)
 	if (channel == 'channel')
 	{
-		var messageArr = message.split('>');
-		var ws = sockets[messageArr[0]];
+    var messageArr = message.split('>');
+    var uuid = messageArr[0]
+		var wsFrom = sockets[uuid];
 		var content = messageArr[1];
-		// les messages sont supposés contenir les ID utilisateurs
-		//var socket = sockets[message];
-		if (ws != undefined)
-		{
-      ws.send(`来自${ws.from || '???'}的用户${ws.uuid}发送了: ${content}(来自与你另一台服务器)`);
-		}
+
+    // 如果socket是非本服务器的
+    if(!wsFrom) {
+      wss.clients.forEach(function each(client) {
+        if (client !== ws && client.readyState === WebSocket.OPEN) {
+          client.send(`来自其他服务器的用户${uuid}发送了: ${content}`);
+        }
+      });
+    }
 	}
 });
 
